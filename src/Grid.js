@@ -14,9 +14,10 @@ class Grid extends React.Component {
 
     // render the thing
     render() {
+        const {guessList, guessNumber} = this.props 
         return (
             <div id="word-grid">
-                <h1>{this.props.currentWord === "" ? "_" : this.props.currentWord}</h1>
+                <h1>{guessList[guessNumber] === "" ? "_" : guessList[guessNumber]}</h1>
             </div>
         )
     }

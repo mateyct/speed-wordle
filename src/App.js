@@ -9,16 +9,31 @@ class App extends React.Component {
 constructor(props) {
   super(props)
   this.state = {
-    currentWord: "",
+    guesses: [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     guessNumber: 0
   };
+  this.keyLetter = this.keyLetter.bind(this)
 }
 
   /**
    * Set up some of my listeners
    */
   componentDidMount() {
-    document.addEventListener("keydown", this.keyLetter.bind(this))
+    document.addEventListener("keydown", this.keyLetter)
+  }
+
+  /**
+   * Remove the listener
+   */
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.keyLetter)
   }
 
   /**
@@ -26,14 +41,13 @@ constructor(props) {
    * @param {*} e Generic event information
    */
   keyLetter(e) {
-    const {currentWord} = this.state
+    if(this.state.guessNumber + 1 > 6) {
+      return
+    }
     // check if it's a letter
     if(this.isLetter(e.key)) {
       // exit if the word is too long
-      if(currentWord.length >= 5) return
-      this.setState({
-        currentWord: currentWord + e.key
-      })
+      this.typeLetter(e.key)
     }
     // if backspace pressed
     else if(e.key === "Backspace") {
@@ -55,15 +69,15 @@ constructor(props) {
   }
 
   render() {
-    const {currentWord} = this.state;
+    const {guesses} = this.state;
     return (
       <div className="App">
        
         <header className="App-header">
           {/*display guesses*/}
-          <Grid currentWord={currentWord} guessNumber={this.state.guessNumber} />
+          <Grid guessList={guesses} guessNumber={this.state.guessNumber} />
           {/*Keyboard*/}
-          <Keyboard whenClicked={this.typeLetter.bind(this)}/>
+          <Keyboard whenClicked={this.typeLetter.bind(this)} whenEntered={this.enter.bind(this)} whenBacked={this.backspace.bind(this)}/>
         </header>
       </div>
     );
@@ -74,11 +88,17 @@ constructor(props) {
    * @param {*} keyAdd The letter this represents
    */
   typeLetter(keyAdd) {
-    const {currentWord} = this.state
+    const {guesses, guessNumber} = this.state
+    if(guessNumber + 1 > 6) {
+      return
+    }
     // get out so we can't add more letters
-    if(currentWord.length >= 5) return
+    if(guesses[guessNumber].length >= 5) return
+    // copy the name
+    let guessEdit = guesses.slice()
+    guessEdit[guessNumber] = guessEdit[guessNumber] + keyAdd
     this.setState({
-      currentWord: currentWord + keyAdd
+      guesses: guessEdit
     })
   }
 
@@ -86,19 +106,41 @@ constructor(props) {
    * Removes the last letter
    */
   backspace() {
-    const {currentWord} = this.state
+    const {guesses, guessNumber} = this.state
+    if(guessNumber + 1 > 6) {
+      return
+    }
+    // make a copy and remove one
+    let guessEdit = guesses.slice()
+    guessEdit[guessNumber] = guessEdit[guessNumber].substring(0, guessEdit[guessNumber].length - 1)
     // set state to copy
     this.setState({
-      currentWord: currentWord.substring(0, currentWord.length - 1)
+      guesses: guessEdit
     });
   }
 
   enter() {
-    const {currentWord} = this.state
-    // for now, just erase the word
+    const {guessNumber, guesses} = this.state
+    if(guessNumber + 1 > 6) {
+      return
+    }
+    // if less, erase word
+    if(guesses[guessNumber].length < 5) {
+      let guessCopy = guesses.slice()
+      guessCopy[guessNumber] = ""
+      this.setState({
+        guesses: guessCopy
+      })
+      return
+    }
+    // if more, increase guessNumber
     this.setState({
-      currentWord: ""
+      guessNumber: guessNumber + 1
     })
+    if(guessNumber + 1 > 6 /*TODO: || guess == correctWord*/) {
+      // end game
+      return
+    }
   }
 }
 
