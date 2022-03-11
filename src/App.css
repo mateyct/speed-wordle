@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.row button {
+  height: 75px;
+  width: 75px;
+  margin: 10px;
+  font-size: 2em;
+}
+
+button.one-and-a-half {
+  width: 112.5px;
+  font-size: 1.5em;
+}
