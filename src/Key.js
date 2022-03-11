@@ -13,10 +13,13 @@ class Key extends React.Component {
         }
     }
     render() {
-        return <button onClick={this.runThing.bind(this)}>{this.state.key}</button>;
+        return <button onClick={this.addLetter.bind(this)}>{this.state.key}</button>;
     }
 
-    runThing() {
+    /**
+     * Calls the function from above to add to the word
+     */
+    addLetter() {
         this.state.clickEvent(this.state.key)
     }
 }

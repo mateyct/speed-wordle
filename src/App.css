@@ -48,3 +48,10 @@ button.one-and-a-half {
   width: 112.5px;
   font-size: 1.5em;
 }
+
+.gridBox {
+  width: 100px;
+  height: 100px;
+  display: inline;
+  border: black 1px solid;
+}

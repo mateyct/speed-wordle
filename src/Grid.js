@@ -10,10 +10,16 @@ class Grid extends React.Component {
      */
     constructor(props) {
         super(props)
-        // set state to show the current word and guess number
-        this.state = {
-            word: props.currentWord,
-            guess: props.guessNumber
-        }
+    }
+
+    // render the thing
+    render() {
+        return (
+            <div id="word-grid">
+                <h1>{this.props.currentWord === "" ? "_" : this.props.currentWord}</h1>
+            </div>
+        )
     }
 }
+
+export default Grid;
