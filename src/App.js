@@ -1,15 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import Key from './Key';
 import Grid from './Grid';
 import Keyboard from './Keyboard';
+import Word from './Word';
 
 class App extends React.Component {
 constructor(props) {
   super(props)
   this.state = {
-    guesses: Array(6).fill(""),
+    guesses: [
+      new Word(),
+      new Word(),
+      new Word(),
+      new Word(),
+      new Word(),
+      new Word()
+    ],
     guessNumber: 0
   };
   this.keyLetter = this.keyLetter.bind(this)
@@ -87,10 +93,10 @@ constructor(props) {
       return
     }
     // get out so we can't add more letters
-    if(guesses[guessNumber].length >= 5) return
+    if(guesses[guessNumber].letterAt >= 5) return
     // copy the name
     let guessEdit = guesses.slice()
-    guessEdit[guessNumber] = guessEdit[guessNumber] + keyAdd
+    guessEdit[guessNumber].addLetter(keyAdd)
     this.setState({
       guesses: guessEdit
     })
@@ -106,7 +112,7 @@ constructor(props) {
     }
     // make a copy and remove one
     let guessEdit = guesses.slice()
-    guessEdit[guessNumber] = guessEdit[guessNumber].substring(0, guessEdit[guessNumber].length - 1)
+    guessEdit[guessNumber].removeLetter()
     // set state to copy
     this.setState({
       guesses: guessEdit
@@ -119,9 +125,9 @@ constructor(props) {
       return
     }
     // if less, erase word
-    if(guesses[guessNumber].length < 5) {
+    if(guesses[guessNumber].letterAt < 5) {
       let guessCopy = guesses.slice()
-      guessCopy[guessNumber] = ""
+      guessCopy[guessNumber].resetWord()
       this.setState({
         guesses: guessCopy
       })

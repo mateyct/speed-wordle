@@ -34,11 +34,11 @@ function GridRow(props) {
     // add each box
     return (
         <div className="gridRow">
-            <GridBox cLetter={guessRow.charAt(0)}/>
-            <GridBox cLetter={guessRow.charAt(1)}/>
-            <GridBox cLetter={guessRow.charAt(2)}/>
-            <GridBox cLetter={guessRow.charAt(3)}/>
-            <GridBox cLetter={guessRow.charAt(4)}/>
+            <GridBox cLetter={guessRow.word[0]}/>
+            <GridBox cLetter={guessRow.word[1]}/>
+            <GridBox cLetter={guessRow.word[2]}/>
+            <GridBox cLetter={guessRow.word[3]}/>
+            <GridBox cLetter={guessRow.word[4]}/>
         </div>
     )
 }
@@ -48,7 +48,7 @@ function GridRow(props) {
  * @param {*} props 
  */
 function GridBox(props) {
-    return <div className="gridBox">{props.cLetter === "" ? "_" : props.cLetter}</div>
+    return <div className="gridBox" style={{"backgroundColor": props.cLetter.color}}>{props.cLetter.letter === "" ? "_" : props.cLetter.letter}</div>
 }
 
 export default Grid;

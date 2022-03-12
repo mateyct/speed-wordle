@@ -5,10 +5,6 @@ import Key from "./Key";
  * The main keyboard
  */
 class Keyboard extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <div id="keyboard">
