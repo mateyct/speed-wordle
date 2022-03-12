@@ -9,14 +9,7 @@ class App extends React.Component {
 constructor(props) {
   super(props)
   this.state = {
-    guesses: [
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
+    guesses: Array(6).fill(""),
     guessNumber: 0
   };
   this.keyLetter = this.keyLetter.bind(this)
@@ -74,6 +67,7 @@ constructor(props) {
       <div className="App">
        
         <header className="App-header">
+          <h1>Speed Wordle</h1>
           {/*display guesses*/}
           <Grid guessList={guesses} guessNumber={this.state.guessNumber} />
           {/*Keyboard*/}

@@ -38,10 +38,10 @@
 }
 
 .row button {
-  height: 75px;
-  width: 75px;
+  height: 65px;
+  width: 65px;
   margin: 10px;
-  font-size: 2em;
+  font-size: 1.75em;
 }
 
 button.one-and-a-half {
@@ -52,6 +52,17 @@ button.one-and-a-half {
 .gridBox {
   width: 100px;
   height: 100px;
-  display: inline;
+  display: inline-block;
   border: black 1px solid;
+  font-size: 2.25em;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.gridRow {
+  height: fit-content;
+  padding: 0;
+}
+h1 {
+  margin: 5px;
 }
