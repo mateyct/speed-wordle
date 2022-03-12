@@ -16,7 +16,8 @@ constructor(props) {
       new Word(),
       new Word()
     ],
-    guessNumber: 0
+    guessNumber: 0,
+    correct: "super"
   };
   this.keyLetter = this.keyLetter.bind(this)
 }
@@ -120,18 +121,25 @@ constructor(props) {
   }
 
   enter() {
-    const {guessNumber, guesses} = this.state
+    const {guessNumber, guesses, correct} = this.state
     if(guessNumber + 1 > 6) {
       return
     }
     // if less, erase word
     if(guesses[guessNumber].letterAt < 5) {
+      // handle resetting
       let guessCopy = guesses.slice()
       guessCopy[guessNumber].resetWord()
       this.setState({
         guesses: guessCopy
       })
       return
+    }
+    // check correctness of word
+    for(let i = 0; i < correct.length; i++) {
+      if(correct.charAt(i) == guesses[guessNumber].word[i].letter) {
+        guesses[guessNumber].word[i].color = "green"
+      }
     }
     // if more, increase guessNumber
     this.setState({
