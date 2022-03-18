@@ -3,10 +3,47 @@ import React from 'react';
 import Grid from './Grid';
 import Keyboard from './Keyboard';
 import Word from './Word';
+import Letter from './Letter';
+import words from './words/words';
 
 class App extends React.Component {
 constructor(props) {
   super(props)
+  // make array of letters
+  let keyList = [ 
+    [
+      new Letter("q"),
+      new Letter("w"),
+      new Letter("e"),
+      new Letter("r"),
+      new Letter("t"),
+      new Letter("y"),
+      new Letter("u"),
+      new Letter("i"),
+      new Letter("o"),
+      new Letter("p")
+    ],
+    [
+      new Letter("a"),
+      new Letter("s"),
+      new Letter("d"),
+      new Letter("f"),
+      new Letter("g"),
+      new Letter("h"),
+      new Letter("j"),
+      new Letter("k"),
+      new Letter("l")
+    ],
+    [
+      new Letter("z"),
+      new Letter("x"),
+      new Letter("c"),
+      new Letter("v"),
+      new Letter("b"),
+      new Letter("n"),
+      new Letter("m")
+    ]
+  ]
   this.state = {
     guesses: [
       new Word(),
@@ -17,7 +54,8 @@ constructor(props) {
       new Word()
     ],
     guessNumber: 0,
-    correct: "super"
+    correct: "super",
+    keyList: keyList
   };
   this.keyLetter = this.keyLetter.bind(this)
 }
@@ -78,7 +116,7 @@ constructor(props) {
           {/*display guesses*/}
           <Grid guessList={guesses} guessNumber={this.state.guessNumber} />
           {/*Keyboard*/}
-          <Keyboard whenClicked={this.typeLetter.bind(this)} whenEntered={this.enter.bind(this)} whenBacked={this.backspace.bind(this)}/>
+          <Keyboard whenClicked={this.typeLetter.bind(this)} whenEntered={this.enter.bind(this)} whenBacked={this.backspace.bind(this)} letterList={this.state.keyList}/>
         </header>
       </div>
     );
@@ -122,7 +160,17 @@ constructor(props) {
 
   enter() {
     const {guessNumber, guesses, correct} = this.state
+    // if out of guesses, return
     if(guessNumber + 1 > 6) {
+      return
+    }
+    let word = ""
+    // loop to get the words from the guess
+    for(let i = 0; i < correct.length; i++) {
+      word += guesses[guessNumber].word[i].letter
+    }
+    // if the word isn't in the list
+    if(!words[word]) {
       return
     }
     // if less, erase word
@@ -137,8 +185,9 @@ constructor(props) {
     }
     // check correctness of word
     for(let i = 0; i < correct.length; i++) {
+      word += guesses[guessNumber].word[i].letter
       if(correct.charAt(i) == guesses[guessNumber].word[i].letter) {
-        guesses[guessNumber].word[i].color = "green"
+        guesses[guessNumber].word[i].setLevel(2)
       }
     }
     // if more, increase guessNumber

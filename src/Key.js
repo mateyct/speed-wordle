@@ -5,7 +5,18 @@ import React from "react";
  */
 class Key extends React.Component {
     render() {
-        return <button onClick={() => this.props.onClick(this.props.dataKey)}>{this.props.dataKey}</button>;
+        return <button onFocus={this.doThing}
+         onClick={() => this.props.onClick(this.props.dataKey.letter)}
+         style={{backgroundColor: this.props.dataKey.color}}
+         >{this.props.dataKey.letter}</button>;
+    }
+
+    /**
+     * Make it not do messy weird stuff, like focus on the button
+     * @param {*} e 
+     */
+    doThing(e) {
+        e.target.blur()
     }
 }
 
