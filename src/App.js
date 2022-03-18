@@ -186,7 +186,7 @@ constructor(props) {
     // check correctness of word
     for(let i = 0; i < correct.length; i++) {
       word += guesses[guessNumber].word[i].letter
-      if(correct.charAt(i) == guesses[guessNumber].word[i].letter) {
+      if(correct.charAt(i) === guesses[guessNumber].word[i].letter) {
         guesses[guessNumber].word[i].setLevel(2)
       }
     }

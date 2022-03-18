@@ -1,7 +1,5 @@
 import React from "react";
 import Key from "./Key";
-import Letter from "./Letter";
-
 /**
  * The main keyboard
  */
