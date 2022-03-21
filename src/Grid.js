@@ -48,7 +48,8 @@ function GridRow(props) {
  * @param {*} props 
  */
 function GridBox(props) {
-    return <div className="gridBox" style={{"backgroundColor": props.cLetter.color, color: props.cLetter.color === "" ? "black" : "white"}}>{props.cLetter.letter}</div>
+    return <div className="gridBox" style={{"backgroundColor": props.cLetter.color, color: props.cLetter.color === "" ? "black" : "white", border: props.cLetter.color === "" ? "" : "none"}}
+    >{props.cLetter.letter}</div>
 }
 
 export default Grid;

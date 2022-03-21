@@ -86,7 +86,7 @@ constructor(props) {
     guessNumber: cookies.get("guessNumber") ? parseInt(cookies.get("guessNumber")) : 0,
     correct: "frees",
     keyList: keyList,
-    won: cookies.get("won") ? cookies.get("won") : false
+    won: cookies.get("won") ? cookies.get("won") === "true" : false
   };
   this.keyLetter = this.keyLetter.bind(this)
 }
