@@ -5,6 +5,9 @@ import Keyboard from './Keyboard';
 import Word from './Word';
 import Letter from './Letter';
 import words from './words/words';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 class App extends React.Component {
 constructor(props) {
@@ -44,19 +47,46 @@ constructor(props) {
       new Letter("m")
     ]
   ]
+  // check if there is a cookie
+  if(cookies.get("keyList")) {
+    let keys = cookies.get("keyList")
+    // loop to set anything
+    for(let i = 0; i < keys.length; i++) {
+      for(let j = 0; j < keys[i].length; j++) {
+        keyList[i][j].letter = keys[i][j].letter
+        keyList[i][j].color = keys[i][j].color
+        keyList[i][j].level = keys[i][j].level
+      }
+    }
+  }
+  // make guess list
+  let guesses = [
+    new Word(),
+    new Word(),
+    new Word(),
+    new Word(),
+    new Word(),
+    new Word()
+  ]
+  // check if there is a cookie
+  if(cookies.get("guesses")) {
+    let tempGuesses = cookies.get("guesses")
+    // loop and set real letters
+    for(let i = 0; i < tempGuesses.length; i++) {
+      for(let j = 0; j < tempGuesses[i].word.length; j++) {
+        guesses[i].word[j].letter = tempGuesses[i].word[j].letter
+        guesses[i].word[j].level = tempGuesses[i].word[j].level
+        guesses[i].word[j].color = tempGuesses[i].word[j].color
+      }
+    }
+  }
+  if(guesses)
   this.state = {
-    guesses: [
-      new Word(),
-      new Word(),
-      new Word(),
-      new Word(),
-      new Word(),
-      new Word()
-    ],
-    guessNumber: 0,
+    guesses: guesses,
+    guessNumber: cookies.get("guessNumber") ? parseInt(cookies.get("guessNumber")) : 0,
     correct: "frees",
     keyList: keyList,
-    won: false
+    won: cookies.get("won") ? cookies.get("won") : false
   };
   this.keyLetter = this.keyLetter.bind(this)
 }
@@ -65,7 +95,8 @@ constructor(props) {
    * Set up some of my listeners
    */
   componentDidMount() {
-    document.addEventListener("keydown", this.keyLetter)
+    if(!this.state.won)
+      document.addEventListener("keydown", this.keyLetter)
   }
 
   /**
@@ -117,7 +148,7 @@ constructor(props) {
           {/*display guesses*/}
           <Grid guessList={guesses} guessNumber={this.state.guessNumber} />
           {/*Keyboard*/}
-          <Keyboard whenClicked={this.typeLetter.bind(this)} whenEntered={this.enter.bind(this)} whenBacked={this.backspace.bind(this)} letterList={this.state.keyList}/>
+          <Keyboard gameWon={this.state.won} whenClicked={this.typeLetter.bind(this)} whenEntered={this.enter.bind(this)} whenBacked={this.backspace.bind(this)} letterList={this.state.keyList}/>
         </header>
       </div>
     );
@@ -174,16 +205,6 @@ constructor(props) {
     if(!words[word]) {
       return
     }
-    // if less, erase word
-    if(guesses[guessNumber].letterAt < 5) {
-      // handle resetting
-      let guessCopy = guesses.slice()
-      guessCopy[guessNumber].resetWord()
-      this.setState({
-        guesses: guessCopy
-      })
-      return
-    }
     let flags = Array(5).fill(false)
     let yellowFlags = Array(5).fill(false)
     // check correctness of word
@@ -207,16 +228,28 @@ constructor(props) {
         }
       }
     }
+    // loop to set any grays
+    for(let i = 0; i < yellowFlags.length; i++) {
+      if(!yellowFlags[i]) {
+        guesses[guessNumber].word[i].setLevel(0)
+        this.updateKeys(guesses[guessNumber].word[i], 0)
+      }
+    }
+    cookies.set("guesses", guesses)
     // check if all are correct
     if(flags.every(value => value === true)) {
       this.setState({
         won: true
       })
+      cookies.set("won", true)
+      document.removeEventListener("keydown", this.keyLetter)
     }
     // if more, increase guessNumber
     this.setState({
       guessNumber: guessNumber + 1
     })
+
+    cookies.set("guessNumber", guessNumber + 1)
     if(guessNumber + 1 > 6 /*TODO: || guess == correctWord*/) {
       // end game
       return
@@ -229,7 +262,7 @@ constructor(props) {
   updateKeys(letter, level) {
     // set keyList and copy it
     const {keyList} = this.state
-    let copyKeys = [[],[],[]]
+    let copyKeys = JSON.parse(JSON.stringify(keyList))
     // loop both levels to find the matching key
     for (let i = 0; i < keyList.length; i++) {
       for (let j = 0; j < keyList[i].length; j++) {
@@ -243,6 +276,7 @@ constructor(props) {
     this.setState({
       keyList: copyKeys
     })
+    cookies.set("keyList", copyKeys)
   }
 }
 
