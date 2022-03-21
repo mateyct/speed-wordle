@@ -21,13 +21,20 @@ class Letter {
             this.level = level
         }
         else if(level === 1 && this.level < 1) {
-            this.color = "yellow"
+            this.color = "#c9b458"
             this.level = level
         }
         else if(level === 2 && this.level < 2) {
             this.color = "green"
             this.level = level
         }
+    }
+
+    makeCopy() {
+        let copy = new Letter(this.letter)
+        copy.color = this.color
+        copy.level = this.level
+        return copy
     }
 }
 

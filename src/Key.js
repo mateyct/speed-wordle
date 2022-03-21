@@ -7,7 +7,7 @@ class Key extends React.Component {
     render() {
         return <button onFocus={this.doThing}
          onClick={() => this.props.onClick(this.props.dataKey.letter)}
-         style={{backgroundColor: this.props.dataKey.color}}
+         style={{backgroundColor: this.props.dataKey.color, color: this.props.dataKey.color === "" ? "black" : "white"}}
          >{this.props.dataKey.letter}</button>;
     }
 

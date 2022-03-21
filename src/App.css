@@ -1,3 +1,7 @@
+:root {
+  --game-theme: #ffffff;
+}
+
 .App {
   text-align: center;
 }
@@ -14,14 +18,14 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: var(--game-theme);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
 
 .App-link {
@@ -42,6 +46,9 @@
   width: 65px;
   margin: 10px;
   font-size: 1.75em;
+  border: none;
+  background-color: lightgray;
+  border-radius: 5px;
 }
 
 button.one-and-a-half {
@@ -50,18 +57,22 @@ button.one-and-a-half {
 }
 
 .gridBox {
-  width: 100px;
-  height: 100px;
-  display: inline-block;
+  width: 75px;
+  height: 75px;
+  display: block;
   border: black 1px solid;
-  font-size: 2.25em;
-  margin: 0;
+  font-size: 1.75em;
+  margin: 5px;
   box-sizing: border-box;
+  color: black;
+  background-color: var(--game-theme);
 }
 
 .gridRow {
   height: fit-content;
   padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 h1 {
   margin: 5px;

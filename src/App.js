@@ -54,8 +54,9 @@ constructor(props) {
       new Word()
     ],
     guessNumber: 0,
-    correct: "super",
-    keyList: keyList
+    correct: "frees",
+    keyList: keyList,
+    won: false
   };
   this.keyLetter = this.keyLetter.bind(this)
 }
@@ -159,9 +160,9 @@ constructor(props) {
   }
 
   enter() {
-    const {guessNumber, guesses, correct} = this.state
+    const {guessNumber, guesses, correct, won} = this.state
     // if out of guesses, return
-    if(guessNumber + 1 > 6) {
+    if(guessNumber + 1 > 6 || won) {
       return
     }
     let word = ""
@@ -183,12 +184,34 @@ constructor(props) {
       })
       return
     }
+    let flags = Array(5).fill(false)
+    let yellowFlags = Array(5).fill(false)
     // check correctness of word
     for(let i = 0; i < correct.length; i++) {
       word += guesses[guessNumber].word[i].letter
       if(correct.charAt(i) === guesses[guessNumber].word[i].letter) {
         guesses[guessNumber].word[i].setLevel(2)
+        this.updateKeys(guesses[guessNumber].word[i], 2)
+        flags[i] = true
+        yellowFlags[i] = true
       }
+      else {
+        // loop through the guess
+        for(let j = 0; j < guesses[guessNumber].word.length; j++) {
+          if(correct.charAt(i) === guesses[guessNumber].word[j].letter && !flags[j] && !yellowFlags[j]) {
+            guesses[guessNumber].word[j].setLevel(1)
+            this.updateKeys(guesses[guessNumber].word[j], 1)
+            yellowFlags[j] = true
+            break
+          }
+        }
+      }
+    }
+    // check if all are correct
+    if(flags.every(value => value === true)) {
+      this.setState({
+        won: true
+      })
     }
     // if more, increase guessNumber
     this.setState({
@@ -198,6 +221,28 @@ constructor(props) {
       // end game
       return
     }
+  }
+  /**
+   * Makes the keyboard display stuff
+   * @param {*} letter 
+   */
+  updateKeys(letter, level) {
+    // set keyList and copy it
+    const {keyList} = this.state
+    let copyKeys = [[],[],[]]
+    // loop both levels to find the matching key
+    for (let i = 0; i < keyList.length; i++) {
+      for (let j = 0; j < keyList[i].length; j++) {
+        copyKeys[i][j] = keyList[i][j].makeCopy()
+        if(letter.letter === keyList[i][j].letter) {
+          copyKeys[i][j].setLevel(level)
+        }
+      }
+    }
+    // reset the state
+    this.setState({
+      keyList: copyKeys
+    })
   }
 }
 
