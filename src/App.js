@@ -235,13 +235,20 @@ constructor(props) {
         this.updateKeys(guesses[guessNumber].word[i], 0)
       }
     }
-    cookies.set("guesses", guesses)
+    // figure out expiration for cookie stuff
+    let expiration = new Date()
+    expiration.setDate(expiration.getDate() + 1)
+    expiration.setHours(0)
+    expiration.setMinutes(0)
+    expiration.setSeconds(0)
+    // set guess cookie with expiration
+    cookies.set("guesses", guesses, {expires: expiration})
     // check if all are correct
     if(flags.every(value => value === true)) {
       this.setState({
         won: true
       })
-      cookies.set("won", true)
+      cookies.set("won", true, {expires: expiration})
       document.removeEventListener("keydown", this.keyLetter)
     }
     // if more, increase guessNumber
@@ -249,7 +256,7 @@ constructor(props) {
       guessNumber: guessNumber + 1
     })
 
-    cookies.set("guessNumber", guessNumber + 1)
+    cookies.set("guessNumber", guessNumber + 1, {expires: expiration})
     if(guessNumber + 1 > 6 /*TODO: || guess == correctWord*/) {
       // end game
       return
@@ -276,7 +283,14 @@ constructor(props) {
     this.setState({
       keyList: copyKeys
     })
-    cookies.set("keyList", copyKeys)
+    // figure out expiration for cookie stuff
+    let expiration = new Date()
+    expiration.setDate(expiration.getDate() + 1)
+    expiration.setHours(0)
+    expiration.setMinutes(0)
+    expiration.setSeconds(0)
+    // set cookie with expiration
+    cookies.set("keyList", copyKeys, {expires: expiration})
   }
 }
 
