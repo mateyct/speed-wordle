@@ -14,7 +14,7 @@ class Keyboard extends React.Component {
                     <KeyRow gameWon={this.props.gameWon}  rowList={this.props.letterList[1]} onClick={this.props.whenClicked}/>
                 </div>
                 <div className="row">
-                    <button className="one-and-a-half" onClick={this.props.whenEntered}>enter</button>
+                    <button className="one-and-a-half" onClick={this.props.whenEntered}>ENTER</button>
                     <KeyRow gameWon={this.props.gameWon} rowList={this.props.letterList[2]} onClick={this.props.whenClicked}/>
                     <button className="one-and-a-half" onClick={this.props.whenBacked}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">

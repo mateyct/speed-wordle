@@ -41,19 +41,24 @@
   }
 }
 
+#keyboard {
+  width: 50%;
+}
+
 .row button {
   height: 65px;
-  width: 65px;
-  margin: 10px;
-  font-size: 1.75em;
+  width: 8%;
+  display: inline-block;
+  margin: 2.5px;
+  font-size: 1em;
   border: none;
   background-color: lightgray;
   border-radius: 5px;
 }
 
 button.one-and-a-half {
-  width: 112.5px;
-  font-size: 1.5em;
+  width: 15%;
+  font-size: .8em;
 }
 
 .gridBox {
@@ -62,10 +67,19 @@ button.one-and-a-half {
   display: block;
   border: black 1px solid;
   font-size: 1.75em;
-  margin: 5px;
+  margin: 2.5px;
   box-sizing: border-box;
   color: black;
   background-color: var(--game-theme);
+}
+
+@media only screen and (max-width: 600px) {
+  .gridBox {
+    font-size: 2.6em;
+  }
+  #keyboard {
+    width: 100%;
+  }
 }
 
 .gridRow {
@@ -73,6 +87,7 @@ button.one-and-a-half {
   padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
 }
 h1 {
   margin: 5px;
